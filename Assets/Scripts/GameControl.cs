@@ -15,6 +15,16 @@ public class GameControl : MonoBehaviour
     
     public bool isPaused;
 
+    private string[] welcomeMessages = new string[]
+    {
+        "Welcome to TrivialGPT!",
+        "Answer a question in each Category, then",
+        "return to the center for a final question.",
+        " ",
+        "Move with Left and Right Arrow keys.",
+        "Press [R] or [Space] to roll.",
+    };
+
     private void Awake()
     {
         data.ResetData();
@@ -35,34 +45,59 @@ public class GameControl : MonoBehaviour
     
     private void Update()
     {
-        if (data.stepsRemaining > 0)
+        if (!log.isLogging)
         {
-            player.HandleMovement();
-        }
-        else
-        {
-            if (data.state == GameState.Rolling)
+            if (data.stepsRemaining > 0)
             {
-                if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Space))
-                {
-                    data.RollDie();
-                    if (data.currentRoll < 6)
-                    {
-                        log.AddLog("You rolled a " + data.currentRoll + ".");
-                    }
-                    else
-                    {
-                        log.AddLog("You rolled a " + data.currentRoll + "!");
-                    }
-                    data.state = GameState.Moving;
-                }
+                player.HandleMovement();
+            }
+            else
+            {
+                HandleRoll();
             }
         }
 
         data.gameTime += Time.deltaTime;
-        
         PauseControl();
     }
+
+    private void HandleRoll()
+    {
+        if (data.state == GameState.Rolling)
+        {
+            if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Space))
+            {
+                data.RollDie();
+                if (data.currentRoll < 6)
+                {
+                    log.AddLog("You rolled a " + data.currentRoll + ".");
+                }
+                else
+                {
+                    log.AddLog("You rolled a " + data.currentRoll + "!");
+                }
+                data.state = GameState.Moving;
+            }
+        }
+    }
+
+    /*
+    private void EndTurn()
+    {
+        if (data.stepsRemaining == 0 && data.gameTurn > 0)
+        {
+            if (data.currentCategory == "Roll Again")
+            {
+                log.AddLog("Roll again...");
+            }
+            else
+            {
+                log.AddLog("You landed on " + data.currentCategory + ".");
+            }
+        }
+        data.state = GameState.ReadyForInput;
+    }
+    */
 
     private void PauseControl()
     {
@@ -96,15 +131,4 @@ public class GameControl : MonoBehaviour
         Application.Quit();
         #endif
     }
-
-    private string[] welcomeMessages = new string[]
-    {
-        "Welcome to TrivialGPT!",
-        "Answer a question in each Category, then",
-        "return to the center for a final question.",
-        " ",
-        "Move with Left and Right Arrow keys.",
-        "Press [R] or [Space] to roll.",
-        "Ready to roll..."
-    };
 }

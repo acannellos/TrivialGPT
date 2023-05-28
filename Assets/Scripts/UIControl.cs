@@ -9,7 +9,7 @@ public class UIControl : MonoBehaviour
     [SerializeField] private TextMeshProUGUI timeText;
     [SerializeField] private TextMeshProUGUI turnText;
 
-    void Update()
+    private void Update()
     {
         rollText.text = data.currentRoll.ToString();
 

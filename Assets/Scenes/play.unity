@@ -328,7 +328,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &170144190
 GameObject:
@@ -1808,7 +1808,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &724157187
 MonoBehaviour:
@@ -1843,6 +1843,7 @@ MonoBehaviour:
   maxLogTexts: 10
   maxLogChars: 50
   typingSpeed: 0.02
+  isLogging: 0
 --- !u!114 &724157189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1858,6 +1859,7 @@ MonoBehaviour:
   inputField: {fileID: 1988512132}
   caret: {fileID: 605956160}
   log: {fileID: 724157188}
+  data: {fileID: 11400000, guid: 7322b65ee46bf3746a72cacad2d273e5, type: 2}
 --- !u!1 &744900980
 GameObject:
   m_ObjectHideFlags: 0
@@ -1955,7 +1957,7 @@ RectTransform:
   - {fileID: 1791926234}
   - {fileID: 406028422}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2149,7 +2151,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1001 &822943166
 PrefabInstance:
@@ -2164,7 +2166,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4216887842333720987, guid: 3cff825c01aa967449c466d34fef306c, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4216887842333720988, guid: 3cff825c01aa967449c466d34fef306c, type: 3}
       propertyPath: m_Pivot.x
@@ -2824,7 +2826,7 @@ Transform:
   m_Children:
   - {fileID: 792227856}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1070490662
 MonoBehaviour:
@@ -3918,7 +3920,7 @@ Transform:
   - {fileID: 490367182}
   - {fileID: 283734817}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1649755988
 GameObject:
@@ -4727,7 +4729,7 @@ MonoBehaviour:
   m_GlobalFontAsset: {fileID: 11400000, guid: 9e1ab63f2d13d5d46adfe0a7aa3913fe, type: 2}
   m_OnFocusSelectAll: 1
   m_ResetOnDeActivation: 1
-  m_RestoreOriginalTextOnEscape: 1
+  m_RestoreOriginalTextOnEscape: 0
   m_isRichTextEditingAllowed: 1
   m_LineLimit: 0
   m_InputValidator: {fileID: 0}

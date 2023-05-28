@@ -9,11 +9,6 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private Board board;
     private float lerpTime = 0.1f;
 
-    public void EndTurn()
-    {
-        data.state = GameState.Rolling;
-    }
-
     public void HandleMovement()
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -59,17 +54,14 @@ public class PlayerControl : MonoBehaviour
         {
             if (data.currentCategory == "Roll Again")
             {
-                EndTurn();
+                data.state = GameState.Rolling;
                 log.AddLog("Roll again...");
             }
             else
             {
+                data.state = GameState.ReadyForInput;
                 log.AddLog("You landed on " + data.currentCategory + ".");
-                EndTurn();
                 log.AddLog("QUESTION");
-                log.AddLog("INPUT");
-                log.AddLog("ANSWER");
-                log.AddLog("Ready to roll...");
             }
         }
     }

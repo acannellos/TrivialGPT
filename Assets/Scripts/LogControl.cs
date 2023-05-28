@@ -12,7 +12,7 @@ public class LogControl : MonoBehaviour
 
     private List<GameObject> logTexts = new List<GameObject>();
 
-    private bool isTyping = false;
+    public bool isLogging = false;
 
     private Queue<string> logQueue = new Queue<string>();
 
@@ -32,7 +32,7 @@ public class LogControl : MonoBehaviour
             logQueue.Enqueue(text);
         }
         
-        if (!isTyping)
+        if (!isLogging)
         {
             StartCoroutine(TypeNextLog());
         }
@@ -45,7 +45,7 @@ public class LogControl : MonoBehaviour
             yield break;
         }
 
-        isTyping = true;
+        isLogging = true;
 
         string nextLog = logQueue.Dequeue();
 
@@ -65,19 +65,19 @@ public class LogControl : MonoBehaviour
         
         logTexts.Add(newText);
 
-        isTyping = false;
+        isLogging = false;
         StartCoroutine(TypeNextLog());
     }
 
     private IEnumerator TypeText(TextMeshProUGUI textMesh, string text)
     {
-        isTyping = true;
+        isLogging = true;
         textMesh.text = ""; // Clear the text initially
         foreach (char c in text)
         {
             textMesh.text += c;
             yield return new WaitForSeconds(typingSpeed);
         }
-        isTyping = false;
+        isLogging = false;
     }
 }
