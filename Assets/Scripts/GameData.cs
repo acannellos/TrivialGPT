@@ -14,7 +14,7 @@ public class GameData : ScriptableObject
     public GameState state;
 
     public int currentIndex;
-    public int rollResult;
+    public int currentRoll;
     public int stepsRemaining;
 
     public string currentCategory;
@@ -24,8 +24,8 @@ public class GameData : ScriptableObject
 
     public void RollDie()
     {
-        rollResult = Random.Range(1, 7);
-        stepsRemaining += rollResult;
+        currentRoll = Random.Range(1, 7);
+        stepsRemaining += currentRoll;
         gameTurn++;
     }
 
@@ -33,7 +33,7 @@ public class GameData : ScriptableObject
     {
         currentCategory = string.Empty;
         currentIndex = 3;
-        rollResult = 0;
+        currentRoll = 0;
         stepsRemaining = 0;
         gameTime = 0;
         gameTurn = 0;
@@ -44,7 +44,7 @@ public class GameData : ScriptableObject
         { 0, "Geography" },
         { 1, "Entertainment" },
         { 2, "History" },
-        { 3, "Start" },
+        { 3, "Roll Again" },
         { 4, "Arts & Literature" },
         { 5, "Science & Nature" },
         { 6, "Sports & Leisure" }

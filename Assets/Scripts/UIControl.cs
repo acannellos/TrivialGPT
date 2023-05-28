@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -13,7 +11,7 @@ public class UIControl : MonoBehaviour
 
     void Update()
     {
-        rollText.text = data.rollResult.ToString();
+        rollText.text = data.currentRoll.ToString();
 
         stepText.text = data.stepsRemaining.ToString();
         
@@ -23,6 +21,4 @@ public class UIControl : MonoBehaviour
         
         turnText.text = data.gameTurn.ToString();
     }
-
-
 }

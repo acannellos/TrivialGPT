@@ -6,7 +6,6 @@ using TMPro;
 public class LogControl : MonoBehaviour
 {
     [SerializeField] private GameObject textTemplate;
-    [SerializeField] private float welcomeDelay = 1f;
     [SerializeField] private int maxLogTexts = 10;
     [SerializeField] private int maxLogChars = 50;
     [SerializeField] private float typingSpeed = 0.1f;
@@ -80,24 +79,5 @@ public class LogControl : MonoBehaviour
             yield return new WaitForSeconds(typingSpeed);
         }
         isTyping = false;
-    }
-
-    private string[] welcomeMessages = new string[]
-    {
-        "Welcome to TrivialGPT!",
-        "Answer a question in each Category, then",
-        "return to the center for a final question. lorum ipsum this is a major test again to see what happens when we load in a really long string hopefully this is long enough to see what happens!! cooool eao . bye",
-        " ",
-        "Move with Left and Right Arrow keys.",
-        "Press [R] or [Space] to roll.",
-        "Ready to roll..."
-    };
-
-    private void Start()
-    {
-        foreach (string message in welcomeMessages)
-        {
-            AddLog(message);
-        }
     }
 }

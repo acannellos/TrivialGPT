@@ -9,45 +9,12 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private Board board;
     private float lerpTime = 0.1f;
 
-    private void Start()
-    {
-        SetPlayerPosition(data.currentIndex);
-        data.state = GameState.Rolling;
-    }
-
-    private void Update()
-    {
-        if (data.stepsRemaining > 0)
-        {
-            HandleMovement();
-        }
-        else
-        {
-            if (data.state == GameState.Rolling)
-            {
-                if (Input.GetKeyDown(KeyCode.R) || Input.GetKeyDown(KeyCode.Space))
-                {
-                    data.RollDie();
-                    if (data.rollResult < 6)
-                    {
-                        log.AddLog("You rolled a " + data.rollResult + ".");
-                    }
-                    else
-                    {
-                        log.AddLog("You rolled a " + data.rollResult + "!");
-                    }
-                    data.state = GameState.Moving;
-                }
-            }
-        }
-    }
-
-    private void EndTurn()
+    public void EndTurn()
     {
         data.state = GameState.Rolling;
     }
 
-    private void HandleMovement()
+    public void HandleMovement()
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
         {
@@ -63,7 +30,7 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    private void SetPlayerPosition(int index)
+    public void SetPlayerPosition(int index)
     {
         Vector3 targetPosition = board.tileList[index].position;
         StartCoroutine(MovePlayer(targetPosition));
@@ -90,7 +57,7 @@ public class PlayerControl : MonoBehaviour
 
         if (data.stepsRemaining == 0 && data.gameTurn > 0)
         {
-            if (data.currentCategory == "Start")
+            if (data.currentCategory == "Roll Again")
             {
                 EndTurn();
                 log.AddLog("Roll again...");
