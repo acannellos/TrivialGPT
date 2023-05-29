@@ -61,7 +61,7 @@ public class PlayerControl : MonoBehaviour
             {
                 data.state = GameState.ReadyForInput;
                 log.AddLog("You landed on " + data.currentCategory + ".");
-                log.AddLog("QUESTION");
+                log.AddLog("What is the meaning of life?");
             }
         }
     }
