@@ -32,6 +32,8 @@ public class GameData : ScriptableObject
     public float gameTime;
     public int gameTurn;
 
+    public bool endGame;
+
     public void RollDie()
     {
         currentRoll = Random.Range(1, 7);
@@ -80,5 +82,17 @@ public class GameData : ScriptableObject
         }
 
         return false;
+    }
+
+    public bool CheckAllAnswered()
+    {
+        foreach (KeyValuePair<int, CategoryData> category in categories)
+        {
+            if (!category.Value.isAnswered)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }

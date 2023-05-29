@@ -8,6 +8,7 @@ public class InputFieldControl : MonoBehaviour
     [SerializeField] private GameObject caret;
     [SerializeField] private LogControl log;
     [SerializeField] private GameData data;
+    [SerializeField] private TriviaControl trivia;
 
     private void Start()
     {
@@ -42,6 +43,9 @@ public class InputFieldControl : MonoBehaviour
         {
             log.AddLog(s);
 
+            trivia.CheckQuestion(data.currentIndex, trivia.questionIndex, s);
+
+            /*
             //TODO check if answer is correct
             if (s == "pineapple on pizza")
             {
@@ -53,7 +57,9 @@ public class InputFieldControl : MonoBehaviour
                 log.AddLog("Correct!");
                 data.categories[data.currentIndex].isAnswered = true;
                 Debug.Log(data.categories[data.currentIndex].categoryName + " : " + data.categories[data.currentIndex].isAnswered);
+                Debug.Log(data.CheckAllAnswered());
             }
+            */
             log.AddLog("Ready to roll...");
 
             data.state = GameState.Rolling;

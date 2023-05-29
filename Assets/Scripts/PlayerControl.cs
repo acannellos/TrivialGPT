@@ -9,6 +9,9 @@ public class PlayerControl : MonoBehaviour
     [SerializeField] private Board board;
     private float lerpTime = 0.1f;
 
+    //[SerializeField] private OpenAIControl openAI;
+    [SerializeField] private TriviaControl trivia;
+
     public void HandleMovement()
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -63,7 +66,10 @@ public class PlayerControl : MonoBehaviour
                 data.state = GameState.ReadyForInput;
                 data.previousState = GameState.Moving;
                 log.AddLog("You landed on " + data.currentCategory + ".");
-                log.AddLog("What is the meaning of life?");
+                log.AddLog(trivia.GetRandomQuestion(data.currentIndex).question);
+
+                //log.AddLog("What is the meaning of life?");
+                //openAI.GenerateQuestion(data.currentCategory);
             }
         }
     }
