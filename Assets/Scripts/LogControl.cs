@@ -20,9 +20,8 @@ public class LogControl : MonoBehaviour
     {
         if (text.Length > maxLogChars)
         {
-            int splitIndex = text.LastIndexOf(' ', maxLogChars);
-            string firstLine = text.Substring(0, splitIndex);
-            string secondLine = text.Substring(splitIndex + 1);
+            string firstLine = text.Substring(0, maxLogChars);
+            string secondLine = text.Substring(maxLogChars + 1);
             logQueue.Enqueue(firstLine);
             AddLog(secondLine);
             return;
