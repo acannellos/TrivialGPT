@@ -40,7 +40,7 @@ public class UIControl : MonoBehaviour
     {
         for (int i = 0; i < textMeshPros.Length; i++)
         {
-            if (data.GetCategoryAnswer(i))
+            if (data.GetCategoryAnswer(i) && data.currentIndex != 3)
             {
                 textMeshPros[i].color = answeredColor;
             }
