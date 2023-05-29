@@ -13,8 +13,6 @@ public class GameControl : MonoBehaviour
     [SerializeField] private LogControl log;
     [SerializeField] private GameObject pauseMenu;
     
-    public bool isPaused;
-
     private string[] welcomeMessages = new string[]
     {
         "Welcome to TrivialGPT!",
@@ -29,7 +27,6 @@ public class GameControl : MonoBehaviour
     {
         data.ResetData();
         player.SetPlayerPosition(data.currentIndex);
-        data.state = GameState.Rolling;
 
         foreach (string message in welcomeMessages)
         {
@@ -37,8 +34,7 @@ public class GameControl : MonoBehaviour
         }
 
         pauseMenu.SetActive(false);
-        isPaused = false;
-
+        
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -77,53 +73,37 @@ public class GameControl : MonoBehaviour
                     log.AddLog("You rolled a " + data.currentRoll + "!");
                 }
                 data.state = GameState.Moving;
+                data.previousState = GameState.Rolling;
             }
         }
     }
-
-    /*
-    private void EndTurn()
-    {
-        if (data.stepsRemaining == 0 && data.gameTurn > 0)
-        {
-            if (data.currentCategory == "Roll Again")
-            {
-                log.AddLog("Roll again...");
-            }
-            else
-            {
-                log.AddLog("You landed on " + data.currentCategory + ".");
-            }
-        }
-        data.state = GameState.ReadyForInput;
-    }
-    */
 
     private void PauseControl()
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (isPaused)
+            if (data.state == GameState.Paused)
             {
+                data.state = data.previousState;
                 pauseMenu.SetActive(false);
-                isPaused = false;
                 Time.timeScale = 1f;
             }
             else
             {
+                data.previousState = data.state;
+                data.state = GameState.Paused;
                 pauseMenu.SetActive(true);
-                isPaused = true;
                 Time.timeScale = 0f;
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Q) && isPaused)
+        if (data.state == GameState.Paused && Input.GetKeyDown(KeyCode.Q))
         {
             QuitApplication();
         }
     }
 
-    void QuitApplication()
+    private void QuitApplication()
     {
         #if UNITY_EDITOR
         EditorApplication.ExitPlaymode();

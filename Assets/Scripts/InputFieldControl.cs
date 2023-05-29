@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class InputControl : MonoBehaviour
+public class InputFieldControl : MonoBehaviour
 {
     [SerializeField] private TMP_InputField inputField;
     [SerializeField] private GameObject caret;
@@ -11,14 +11,12 @@ public class InputControl : MonoBehaviour
 
     private void Start()
     {
-        caret.SetActive(false);
-        inputField.DeactivateInputField();
-        inputField.text = string.Empty;
+        DeactivateInputHandler();
     }
 
     private void Update()
     {
-        if (data.state == GameState.ReadyForInput)
+        if (data.state == GameState.ReadyForInput && !log.isLogging)
         {
             inputField.interactable = true;
             caret.SetActive(true);
@@ -26,11 +24,16 @@ public class InputControl : MonoBehaviour
         }
         else
         {
-            inputField.interactable = false;
-            caret.SetActive(false);
-            inputField.DeactivateInputField();
-            inputField.text = string.Empty;
+            DeactivateInputHandler();
         }
+    }
+    
+    public void DeactivateInputHandler()
+    {
+        inputField.interactable = false;
+        caret.SetActive(false);
+        inputField.DeactivateInputField();
+        inputField.text = string.Empty;
     }
 
     public void ReadStringInput(string s)
@@ -38,16 +41,22 @@ public class InputControl : MonoBehaviour
         if (inputField.text != string.Empty)
         {
             log.AddLog(s);
-            data.state = GameState.Rolling;
+
+            //TODO check if answer is correct
             if (s == "pineapple on pizza")
             {
                 log.AddLog("Incorrect!");
+                Debug.Log(data.categories[data.currentIndex].categoryName + " : " + data.categories[data.currentIndex].isAnswered);
             }
             else
             {
                 log.AddLog("Correct!");
+                data.categories[data.currentIndex].isAnswered = true;
+                Debug.Log(data.categories[data.currentIndex].categoryName + " : " + data.categories[data.currentIndex].isAnswered);
             }
             log.AddLog("Ready to roll...");
+
+            data.state = GameState.Rolling;
         }
     }
 }

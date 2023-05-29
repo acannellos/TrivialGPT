@@ -5,6 +5,7 @@ using TMPro;
 
 public class LogControl : MonoBehaviour
 {
+    [SerializeField] private GameData data;
     [SerializeField] private GameObject textTemplate;
     [SerializeField] private int maxLogTexts = 10;
     [SerializeField] private int maxLogChars = 50;
@@ -71,7 +72,7 @@ public class LogControl : MonoBehaviour
     private IEnumerator TypeText(TextMeshProUGUI textMesh, string text)
     {
         isLogging = true;
-        textMesh.text = ""; // Clear the text initially
+        textMesh.text = "";
         foreach (char c in text)
         {
             textMesh.text += c;

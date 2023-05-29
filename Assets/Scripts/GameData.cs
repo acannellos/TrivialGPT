@@ -5,13 +5,23 @@ public enum GameState
 {
     Rolling,
     Moving,
-    ReadyForInput
+    ReadyForInput,
+    Paused
+}
+
+public class CategoryData
+{
+    public string categoryName;
+    public Color categoryColor;
+    public string categoryHex;
+    public bool isAnswered;
 }
 
 [CreateAssetMenu(menuName = "Game Data", fileName = "data")]
 public class GameData : ScriptableObject
 {
     public GameState state;
+    public GameState previousState;
 
     public int currentIndex;
     public int currentRoll;
@@ -31,6 +41,8 @@ public class GameData : ScriptableObject
 
     public void ResetData()
     {
+        state = GameState.Rolling;
+        previousState = GameState.Rolling;
         currentCategory = string.Empty;
         currentIndex = 3;
         currentRoll = 0;
@@ -39,24 +51,34 @@ public class GameData : ScriptableObject
         gameTurn = 0;
     }
 
-    Dictionary<int, string> categories = new Dictionary<int, string>
+    public Dictionary<int, CategoryData> categories = new Dictionary<int, CategoryData>
     {
-        { 0, "Geography" },
-        { 1, "Entertainment" },
-        { 2, "History" },
-        { 3, "Roll Again" },
-        { 4, "Arts & Literature" },
-        { 5, "Science & Nature" },
-        { 6, "Sports & Leisure" }
+        { 0, new CategoryData { categoryName = "Geography", categoryColor = Color.red, categoryHex = "#FF0000", isAnswered = false } },
+        { 1, new CategoryData { categoryName = "Entertainment", categoryColor = Color.green, categoryHex = "#00FF00", isAnswered = false } },
+        { 2, new CategoryData { categoryName = "History", categoryColor = Color.blue, categoryHex = "#0000FF", isAnswered = false } },
+        { 3, new CategoryData { categoryName = "Roll Again", categoryColor = Color.yellow, categoryHex = "#FFFF00", isAnswered = false } },
+        { 4, new CategoryData { categoryName = "Arts & Literature", categoryColor = Color.magenta, categoryHex = "#FF00FF", isAnswered = false } },
+        { 5, new CategoryData { categoryName = "Science & Nature", categoryColor = Color.cyan, categoryHex = "#00FFFF", isAnswered = false } },
+        { 6, new CategoryData { categoryName = "Sports & Leisure", categoryColor = Color.gray, categoryHex = "#808080", isAnswered = false } }
     };
 
-    public string GetStringForValue(int value)
+    public string GetCategoryName(int value)
     {
-        if (categories.TryGetValue(value, out string stringValue))
+        if (categories.TryGetValue(value, out CategoryData categoryData))
         {
-            return stringValue;
+            return categoryData.categoryName;
         }
 
         return string.Empty;
+    }
+
+    public bool GetCategoryAnswer(int value)
+    {
+        if (categories.TryGetValue(value, out CategoryData categoryData))
+        {
+            return categoryData.isAnswered;
+        }
+
+        return false;
     }
 }
