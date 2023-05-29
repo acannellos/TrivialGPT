@@ -57,7 +57,7 @@ public class GameControl : MonoBehaviour
             }
         }
 
-        data.gameTime += Time.deltaTime;
+        if (data.gameTurn > 0) data.gameTime += Time.deltaTime;
         PauseControl();
     }
 

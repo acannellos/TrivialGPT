@@ -20,12 +20,13 @@ public class InputControl : MonoBehaviour
     {
         if (data.state == GameState.ReadyForInput)
         {
-            inputField.enabled = true;
+            inputField.interactable = true;
             caret.SetActive(true);
             inputField.ActivateInputField();
         }
         else
         {
+            inputField.interactable = false;
             caret.SetActive(false);
             inputField.DeactivateInputField();
             inputField.text = string.Empty;
@@ -38,7 +39,14 @@ public class InputControl : MonoBehaviour
         {
             log.AddLog(s);
             data.state = GameState.Rolling;
-            log.AddLog("ANSWER");
+            if (s == "pineapple on pizza")
+            {
+                log.AddLog("Incorrect!");
+            }
+            else
+            {
+                log.AddLog("Correct!");
+            }
             log.AddLog("Ready to roll...");
         }
     }
