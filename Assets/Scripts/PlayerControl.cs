@@ -15,13 +15,13 @@ public class PlayerControl : MonoBehaviour
         {
             data.currentIndex = (data.currentIndex - 1 + board.tileList.Count) % board.tileList.Count;
             SetPlayerPosition(data.currentIndex);
-            data.currentCategory = data.GetStringForValue(data.currentIndex);
+            data.currentCategory = data.GetCategoryName(data.currentIndex);
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             data.currentIndex = (data.currentIndex + 1) % board.tileList.Count;
             SetPlayerPosition(data.currentIndex);
-            data.currentCategory = data.GetStringForValue(data.currentIndex);
+            data.currentCategory = data.GetCategoryName(data.currentIndex);
         }
     }
 
@@ -55,11 +55,13 @@ public class PlayerControl : MonoBehaviour
             if (data.currentCategory == "Roll Again")
             {
                 data.state = GameState.Rolling;
+                data.previousState = GameState.Moving;
                 log.AddLog("Roll again...");
             }
             else
             {
                 data.state = GameState.ReadyForInput;
+                data.previousState = GameState.Moving;
                 log.AddLog("You landed on " + data.currentCategory + ".");
                 log.AddLog("What is the meaning of life?");
             }

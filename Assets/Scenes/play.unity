@@ -1795,7 +1795,6 @@ MonoBehaviour:
   player: {fileID: 1070490662}
   log: {fileID: 724157188}
   pauseMenu: {fileID: 406028421}
-  isPaused: 0
 --- !u!4 &724157186
 Transform:
   m_ObjectHideFlags: 0
@@ -1827,6 +1826,8 @@ MonoBehaviour:
   stepText: {fileID: 53472406}
   timeText: {fileID: 2087406252}
   turnText: {fileID: 1151236430}
+  answeredColor: {r: 1, g: 1, b: 1, a: 1}
+  textMeshContainer: {fileID: 2026964939}
 --- !u!114 &724157188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1839,6 +1840,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5074df5a521affc4f8491011854d21da, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  data: {fileID: 11400000, guid: 7322b65ee46bf3746a72cacad2d273e5, type: 2}
   textTemplate: {fileID: 2047789976}
   maxLogTexts: 10
   maxLogChars: 50
