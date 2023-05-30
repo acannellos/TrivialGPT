@@ -6,7 +6,8 @@ public enum GameState
     Rolling,
     Moving,
     ReadyForInput,
-    Paused
+    Paused,
+    Victory
 }
 
 public class CategoryData

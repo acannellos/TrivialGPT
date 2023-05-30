@@ -12,6 +12,15 @@ public class PlayerControl : MonoBehaviour
     //[SerializeField] private OpenAIControl openAI;
     [SerializeField] private TriviaControl trivia;
 
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip rightSound;
+    [SerializeField] private AudioClip leftSound;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
     public void HandleMovement()
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow))
@@ -19,12 +28,14 @@ public class PlayerControl : MonoBehaviour
             data.currentIndex = (data.currentIndex - 1 + board.tileList.Count) % board.tileList.Count;
             SetPlayerPosition(data.currentIndex);
             data.currentCategory = data.GetCategoryName(data.currentIndex);
+            audioSource.PlayOneShot(leftSound);
         }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             data.currentIndex = (data.currentIndex + 1) % board.tileList.Count;
             SetPlayerPosition(data.currentIndex);
             data.currentCategory = data.GetCategoryName(data.currentIndex);
+            audioSource.PlayOneShot(rightSound);
         }
     }
 

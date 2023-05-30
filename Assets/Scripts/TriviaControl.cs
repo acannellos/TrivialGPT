@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TriviaCategory
@@ -16,11 +17,13 @@ public struct Question
 {
     public string question;
     public string answer;
+    public bool isAsked;
 
     public Question(string question, string answer)
     {
         this.question = question;
         this.answer = answer;
+        this.isAsked = false;
     }
 }
 
@@ -28,62 +31,125 @@ public class TriviaControl : MonoBehaviour
 {
     public int questionIndex = -1;
 
-    [SerializeField] LogControl log;
-    [SerializeField] GameData data;
+    [SerializeField] private LogControl log;
+    [SerializeField] private GameData data;
+
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip correctSound;
+    [SerializeField] private AudioClip incorrectSound;
+
+    private void Awake()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
 
     public Question GetRandomQuestion(int currentIndex)
     {
         if (currentIndex >= 0 && currentIndex < categories.Length)
         {
             TriviaCategory category = categories[currentIndex];
-            if (category.questions.Length > 0)
+
+            int questionsRemaining = 0;
+            for (int i = 0; i < category.questions.Length; i++)
             {
-                questionIndex = Random.Range(0, category.questions.Length);
+                if (!category.questions[i].isAsked)
+                {
+                    questionsRemaining++;
+                }
+            }
+
+            if (questionsRemaining > 0)
+            {
+                questionIndex = RollQuestion(category);
+                
+                while (category.questions[questionIndex].isAsked)
+                {
+                    questionIndex = RollQuestion(category);
+                }
+
                 return category.questions[questionIndex];
             }
             else
             {
-                Debug.LogWarning("No questions available for the selected category.");
+                //Debug.LogWarning("No questions available for the selected category.");
             }
         }
         else
         {
-            Debug.LogError("Invalid category index!");
+            //Debug.LogError("Invalid category index!");
         }
         
-        return default(Question);
+        return new Question("What is the meaning of life?", "baba");
+    }
+
+    public int RollQuestion(TriviaCategory category)
+    {
+        int rolledIndex = Random.Range(0, category.questions.Length);
+        return rolledIndex;
     }
 
     public void CheckQuestion(int currentIndex, int questionIndex, string answer)
     {
-    if (currentIndex >= 0 && currentIndex < categories.Length)
-    {
-        TriviaCategory category = categories[currentIndex];
-        if (questionIndex >= 0 && questionIndex < category.questions.Length)
+        if (currentIndex >= 0 && currentIndex < categories.Length)
         {
-            Question question = category.questions[questionIndex];
-            if (question.answer.ToLower().Contains(answer.ToLower()))
+            TriviaCategory category = categories[currentIndex];
+            if (questionIndex >= 0 && questionIndex < category.questions.Length)
             {
-                Debug.Log("Correct!");
-                log.AddLog("Correct!");
-                data.categories[data.currentIndex].isAnswered = true;
+                Question question = category.questions[questionIndex];
+                if (question.answer.ToLower().Contains(answer.ToLower()))
+                {
+                    //Debug.Log("Correct!");
+                    log.AddLog("Correct!");
+                    category.questions[questionIndex].isAsked = true;
+                    data.categories[data.currentIndex].isAnswered = true;
+                    audioSource.PlayOneShot(correctSound);
+                }
+                else
+                {
+                    //Debug.Log("Incorrect.");
+                    log.AddLog("Incorrect.");
+                    category.questions[questionIndex].isAsked = true;
+                    
+                    audioSource.PlayOneShot(incorrectSound);
+                }
             }
             else
             {
-                Debug.Log("Incorrect!");
-                log.AddLog("Incorrect!");
+                //Debug.LogError("Invalid question index!");
             }
         }
         else
         {
-            Debug.LogError("Invalid question index!");
+            //Debug.LogError("Invalid category index!");
+        }
+        VictoryControl();
+    }
+
+    public void VictoryControl()
+    {
+        int answeredCount = 0;
+        foreach (KeyValuePair<int, CategoryData> category in data.categories)
+        {
+            if (category.Value.isAnswered)
+            {
+                answeredCount++;
+            }
+        }
+
+        if (answeredCount >= 6)
+        {
+            float minutes = Mathf.FloorToInt(data.gameTime / 60);
+            float seconds = Mathf.FloorToInt(data.gameTime % 60);
+            log.AddLog("You won in " + minutes + " minutes and " + seconds + " seconds and " + data.gameTurn + " turns.");
+
+            data.state = GameState.Victory;
+        }
+        else
+        {
+            log.AddLog("Ready to roll...");
+            data.state = GameState.Rolling;
         }
     }
-    else
-    {
-        Debug.LogError("Invalid category index!");
-    }
-}
 
     private TriviaCategory[] categories = new TriviaCategory[]
     {
@@ -107,7 +173,7 @@ public class TriviaControl : MonoBehaviour
             new Question("Which actress won the Best Actress Oscar for her role in 'La La Land'?", "Emma Stone"),
             new Question("Which band is known for the hit song 'Hotel California'?", "Eagles"),
             new Question("Which actor portrayed the character of Captain Jack Sparrow in the 'Pirates of the Caribbean' series?", "Johnny Depp"),
-            new Question("Who is the author of the 'Harry Potter' book series?", "J.K. Rowling"),
+            new Question("Who is the director of 'The Godfather'?", "Francis Ford Coppola"),
             new Question("Which movie won the Best Picture Oscar in 2020?", "Parasite"),
             new Question("Which singer released the album 'Reputation' in 2017?", "Taylor Swift"),
             new Question("Which TV series is set in the fictional world of Westeros?", "Game of Thrones"),
@@ -139,7 +205,7 @@ public class TriviaControl : MonoBehaviour
             new Question("Who is the author of the novel 'To Kill a Mockingbird'?", "Harper Lee"),
             new Question("Who is the playwright of 'Hamlet'?", "William Shakespeare"),
             new Question("Which artist is known for his paintings of Campbell's Soup cans?", "Andy Warhol"),
-            new Question("Who is the author of the 'Harry Potter' book series?", "J.K. Rowling"),
+            new Question("Who is the author of 'Cat's Cradle'?", "Kurt Vonnegut"),
             new Question("Which novel tells the story of a man named Dorian Gray?", "The Picture of Dorian Gray"),
             new Question("Who wrote the poem 'The Raven'?", "Edgar Allan Poe"),
             new Question("Which artist is known for his 'Starry Night' painting?", "Vincent van Gogh")
@@ -168,7 +234,7 @@ public class TriviaControl : MonoBehaviour
             new Question("Which tennis player has won the most Grand Slam singles titles?", "Roger Federer"),
             new Question("Which sport uses a shuttlecock?", "Badminton"),
             new Question("Who is the all-time leading scorer in NBA history?", "Kareem Abdul-Jabbar"),
-            new Question("Which sport is played at Augusta National Golf Club?", "Golf"),
+            new Question("Which sport is played at Augusta National?", "Golf"),
             new Question("In which city are the Summer Olympic Games scheduled to be held in 2028?", "Los Angeles"),
             new Question("Which athlete is known as 'The Greatest' and is a boxing legend?", "Muhammad Ali")
         })

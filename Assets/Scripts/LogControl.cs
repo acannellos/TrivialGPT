@@ -22,7 +22,7 @@ public class LogControl : MonoBehaviour
         if (text.Length > maxLogChars)
         {
             string firstLine = text.Substring(0, maxLogChars);
-            string secondLine = text.Substring(maxLogChars + 1);
+            string secondLine = text.Substring(maxLogChars);
             logQueue.Enqueue(firstLine);
             AddLog(secondLine);
             return;
