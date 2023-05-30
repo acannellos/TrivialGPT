@@ -12,12 +12,15 @@ public class GameControl : MonoBehaviour
     [SerializeField] private PlayerControl player;
     [SerializeField] private LogControl log;
     [SerializeField] private GameObject pauseMenu;
+
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip menuSound;
+    [SerializeField] private AudioClip rollSound;
     
     private string[] welcomeMessages = new string[]
     {
         "Welcome to TrivialGPT!",
-        "Answer a question in each Category, then",
-        "return to the center for a final question.",
+        "Answer a question in each Category to win.",
         " ",
         "Move with Left and Right Arrow keys.",
         "Press [R] or [Space] to roll.",
@@ -34,9 +37,13 @@ public class GameControl : MonoBehaviour
         }
 
         pauseMenu.SetActive(false);
-        
+
+        audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(menuSound);
+
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+
     }
     
     private void Update()
@@ -53,7 +60,7 @@ public class GameControl : MonoBehaviour
             }
         }
 
-        if (data.gameTurn > 0) data.gameTime += Time.deltaTime;
+        if (data.gameTurn > 0 && data.state != GameState.Victory) data.gameTime += Time.deltaTime;
         PauseControl();
     }
 
@@ -74,6 +81,8 @@ public class GameControl : MonoBehaviour
                 }
                 data.state = GameState.Moving;
                 data.previousState = GameState.Rolling;
+
+                audioSource.PlayOneShot(rollSound);
             }
         }
     }
